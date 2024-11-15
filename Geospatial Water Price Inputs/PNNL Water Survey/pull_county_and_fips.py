@@ -195,9 +195,41 @@ for fip in fips_use:
     # Check if county data exists first
     if len(df.loc[df['FIPS'] == fip]) > 0:
         
+        # Get columns for that fip
+        col_names = list(df.loc[df['FIPS'] == fip,'col_name'])
+        
+        # Loop through the years to find the average value for the state
+        for year in years:
+            df_water.loc[fip,year] = df_yearly.loc[year,col_names].mean()
+        
     # Check if state data exists next
-    elif
-    
-    # Last resort is water region data
+    elif len(df.loc[df['State FIPS'] == fip[0:2]]) > 0:
+        
+        # Get columns for that state
+        col_names = list(df.loc[df['State FIPS'] == fip[0:2],'col_name'])
+        
+        # Loop through the years to find the average value for the state
+        for year in years:
+            df_water.loc[fip,year] = df_yearly.loc[year,col_names].mean()
     
     # If US average then average all state values
+    elif fip == '01':
+        # Loop through the years to find the average value for the state
+        for year in years:
+            df_water.loc[fip,year] = df_yearly.loc[year,:].mean()
+    
+    # Last resort is water region data
+    else:
+        
+        # Get columns for that water region
+        water_region_use = df_states.loc[df_states['state_fip'] == fip[0:2], 'Water Region'].item()
+        
+        # Get locations in that water region
+        col_names = list(df.loc[df['Water Region'] == water_region_use,'col_name'])
+        
+        # Loop through the years to find the average value for the state
+        for year in years:
+            df_water.loc[fip,year] = df_yearly.loc[year,col_names].mean()
+    
+# Save the results back to Excel
+df_water.to_excel('geographic_water_rates_dollar_per_kgal.xlsx', index=True)
