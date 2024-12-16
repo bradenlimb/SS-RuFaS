@@ -14,56 +14,56 @@ from tqdm import tqdm
 
 #%% Load Data
 # Load the Excel spreadsheet with city and state data
-df = pd.read_excel('PNNL_water_rates.xlsx')  # Update with your file path
+df = pd.read_excel('PNNL_water_rates_with_fips.xlsx')  # Update with your file path
 
 
-#%% ##TODO - Calculate correct escalation rate
+# #%% ##TODO - Calculate correct escalation rate
 
-# Function to calculate escalation rate
-def calc_escalation_rate(cost_1, year_1, cost_2, year_2):
-    escalation_rate = (cost_2/cost_1)**(1/(year_2-year_1))-1
-    return escalation_rate
+# # Function to calculate escalation rate
+# def calc_escalation_rate(cost_1, year_1, cost_2, year_2):
+#     escalation_rate = (cost_2/cost_1)**(1/(year_2-year_1))-1
+#     return escalation_rate
 
-for i in df.index.tolist():
-    df.loc[i, 'Actual Escalation Rate'] = calc_escalation_rate(df.loc[i, 'First Year Rate ($ per kGal)'], 
-                                                               df.loc[i, 'First Year'], 
-                                                               df.loc[i, 'Final Year Rate ($ per kGal)'], 
-                                                               df.loc[i, 'Final Year'], 
-                                                               )
+# for i in df.index.tolist():
+#     df.loc[i, 'Actual Escalation Rate'] = calc_escalation_rate(df.loc[i, 'First Year Rate ($ per kGal)'], 
+#                                                                df.loc[i, 'First Year'], 
+#                                                                df.loc[i, 'Final Year Rate ($ per kGal)'], 
+#                                                                df.loc[i, 'Final Year'], 
+#                                                                )
 
-#%% Find County and FIPS
-# Geolocator for city-to-county lookup
-geolocator = Nominatim(user_agent="county_fips_lookup")
+# #%% Find County and FIPS
+# # Geolocator for city-to-county lookup
+# geolocator = Nominatim(user_agent="county_fips_lookup")
 
-# Function to get county and FIPS code using TIGERweb API
-def get_county_fips(city, state_abbr):
-    try:
-        # Geocode to find the county
-        location = geolocator.geocode(f"{city}, {state_abbr}")
-        if location:
-            lat, lon = location.latitude, location.longitude
-            # Use TIGERweb API to find the FIPS code based on coordinates
-            response = requests.get(
-                f"https://geo.fcc.gov/api/census/area?lat={lat}&lon={lon}&format=json"
-            )
-            data = response.json()
-            if 'results' in data and data['results']:
-                county_name = data['results'][0]['county_name']
-                fips = data['results'][0]['county_fips']
-                return county_name, fips
-    except Exception as e:
-        print(f"Error processing {city}, {state_abbr}: {e}")
-    return None, None
+# # Function to get county and FIPS code using TIGERweb API
+# def get_county_fips(city, state_abbr):
+#     try:
+#         # Geocode to find the county
+#         location = geolocator.geocode(f"{city}, {state_abbr}")
+#         if location:
+#             lat, lon = location.latitude, location.longitude
+#             # Use TIGERweb API to find the FIPS code based on coordinates
+#             response = requests.get(
+#                 f"https://geo.fcc.gov/api/census/area?lat={lat}&lon={lon}&format=json"
+#             )
+#             data = response.json()
+#             if 'results' in data and data['results']:
+#                 county_name = data['results'][0]['county_name']
+#                 fips = data['results'][0]['county_fips']
+#                 return county_name, fips
+#     except Exception as e:
+#         print(f"Error processing {city}, {state_abbr}: {e}")
+#     return None, None
 
-# Apply the function to each row
-tqdm.pandas()  # Enable tqdm with pandas
-df[['County', 'FIPS']] = df.progress_apply(lambda row: pd.Series(get_county_fips(row['City'], row['State'])), axis=1)
+# # Apply the function to each row
+# tqdm.pandas()  # Enable tqdm with pandas
+# df[['County', 'FIPS']] = df.progress_apply(lambda row: pd.Series(get_county_fips(row['City'], row['State'])), axis=1)
 
-# Add State FIPS to this
-df['State FIPS'] = [fip[:2] for fip in df['FIPS']]
+# # Add State FIPS to this
+# df['State FIPS'] = [fip[:2] for fip in df['FIPS']]
 
-# Save the results back to Excel
-df.to_excel('PNNL_water_rates_with_fips.xlsx', index=False)
+# # Save the results back to Excel
+# df.to_excel('PNNL_water_rates_with_fips.xlsx', index=False)
  
 
 #%% Find yearly data
@@ -232,4 +232,4 @@ for fip in fips_use:
             df_water.loc[fip,year] = df_yearly.loc[year,col_names].mean()
     
 # Save the results back to Excel
-df_water.to_excel('geographic_water_rates_dollar_per_kgal.xlsx', index=True)
+df_water.to_csv('../../_RuFaS Input Files/water_retail_dollar-per-kgal.csv', index=True)

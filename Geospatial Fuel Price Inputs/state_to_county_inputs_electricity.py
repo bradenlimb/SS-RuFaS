@@ -1,0 +1,152 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Sat Jun  1 21:23:38 2024
+
+@author: bradenlimb
+"""
+
+#%% Import Modules
+from IPython import get_ipython
+get_ipython().run_line_magic('reset','-sf')
+import pandas as pd
+import numpy as np
+import sys
+from tqdm import tqdm
+import itertools
+
+import datetime
+begin_time = datetime.datetime.now()
+
+#%% Set Defaults
+
+# year_use = 2021
+PADDs = ['PADD 1A', 
+         'PADD 1B', 
+         'PADD 1C', 
+         'PADD 2', 
+         'PADD 3', 
+         'PADD 4', 
+         'PADD 5', 
+         ]
+
+#%% Loop Through Multiple Years
+# min_year = 2018
+# max_year = 2022
+
+# dict_years = {}
+
+# for year_use in range(min_year,max_year+1):
+
+#%% Load FIPS To Use
+
+# Set the file path to the desired file in the parent directory
+file_path = '../General Inputs/State Taxes.xlsx'
+
+# Read the Excel file, specifying the sheet, index column, and columns to keep
+sheet_name = 'State Taxes'  # Replace with your sheet name
+# index_col = 0  # Replace with the column index you want to use as the index
+# usecols = [0, 1, 2]  # Replace with the list of columns you want to keep
+
+# Load the data into a DataFrame
+df_fips = pd.read_excel(file_path, 
+                        sheet_name=sheet_name, 
+                        # index_col=index_col,
+                        # dtype={"FIPS": str}
+                              )
+
+df_fips['fips'] = df_fips['FIPS']
+# Convert the column from number to string
+df_fips['fips'] = df_fips['fips'].astype(str)
+df_fips.loc[df_fips.fips.str.len()<5,"fips"]="0"+df_fips.fips
+# df_fips.set_index("fips",inplace=True)
+# df_fips[:] = np.nan
+
+for i in range(len(df_fips)):
+    df_fips.loc[i,'state_fips'] = df_fips.loc[i,'fips'][0:2]
+
+# Correct values for the average values case
+df_fips.loc[df_fips['fips'] == '01','state_fips'] = "00"
+
+
+# asdf
+#%% Load the States + PADD Region and get the State FIP id
+# Load the States + PADD Region file
+file_path = '../General Inputs/PADD_Regions.xlsx'
+sheet_name = 'Use'  # Replace with your sheet name
+
+# Load the data into a DataFrame
+df_states = pd.read_excel(file_path, 
+                        sheet_name=sheet_name
+                              )
+
+states_list = list(df_states['State'])
+df_states.set_index("State",inplace=True)
+
+
+# Load the States fips file
+file_path = '../General Inputs/State FIPS.xlsx'
+# sheet_name = 'Use'  # Replace with your sheet name
+
+# Load the data into a DataFrame
+df_state_fips = pd.read_excel(file_path,
+                              dtype={"Numeric code": str}
+                              )
+df_state_fips.loc[df_state_fips["Numeric code"].str.len()<2,"Numeric code"]="0"+df_state_fips["Numeric code"]
+df_state_fips.set_index("Name",inplace=True)
+
+# Combine state + PADD with State FIP id
+for state in states_list:
+    if state == 'US': 
+        df_states.loc[state,'state_fip'] = '00'
+    else:
+        df_states.loc[state,'state_fip'] = df_state_fips.loc[state,'Numeric code']
+    
+    
+#%% Load Electrcity Data 
+
+## TODO Select Electricity Type
+data_type = 'Industrial' # Commercial, Industrial, Residential
+
+# Load the Electricity data
+file_path = f'Electricity - {data_type}.csv'
+
+# Load the data into a DataFrame
+df_elec = pd.read_csv(file_path, skiprows=4, index_col=0)
+
+# asdf
+
+#%% Reformat the electricity data
+
+years_use = df_elec.columns.tolist()[2:]
+
+# Combine Electricity data with df_states
+for year in years_use:
+    for state in states_list:
+        conversion = 1/100 # converting from cents/kWh to $/kwh
+        if state == 'US': index_use = f'{data_type} : United States'
+        elif state == 'District of Columbia': index_use = f'{data_type} : District Of Columbia'
+        else: index_use = f'{data_type} : {state}'
+        df_states.loc[state, year] = df_elec.loc[index_use, year] * conversion
+    
+#%% Reformat to the  fips data
+df_fips_out = df_fips[['fips','state_fips']]
+
+# get a list of unique state fips values
+state_fips_list = df_fips_out['state_fips'].unique().tolist()
+
+# set index value to the state fips so it's easier to reference
+df_states.set_index("state_fip",inplace=True)
+
+# create a list of output columns
+output_cols = years_use
+
+for state_fip in state_fips_list:
+    for output_col in output_cols:
+        df_fips_out.loc[df_fips_out['state_fips'] == state_fip, output_col] = round(df_states.loc[state_fip, output_col],4)
+        
+df_fips_out.drop(columns=['state_fips'], inplace = True)
+
+#%% Save as CSV
+filepath_out = f'../_RuFaS Input Files/electricity_{data_type.lower()}_dollar-per-kwh.csv'
+df_fips_out.to_csv(filepath_out, index = False)
