@@ -231,5 +231,9 @@ for fip in fips_use:
         for year in years:
             df_water.loc[fip,year] = df_yearly.loc[year,col_names].mean()
     
+
+# Rename the index axis to 'fips'
+df_water = df_water.rename_axis('fips')
+    
 # Save the results back to Excel
 df_water.to_csv('../../_RuFaS Input Files/water_retail_dollar-per-kgal.csv', index=True)

@@ -57,7 +57,7 @@ for (i in 1:nrow(metadata)) {
   
   # Calculate the maximum value and scaling
   max_val_use <- max(data[sapply(data, is.numeric)], na.rm = TRUE)
-  scale_val <- round(max_val_use / 7, 2)
+  scale_val <- round(max_val_use / 7, 0)
   
   # Initialize progress bar for the current file
   pb <- txtProgressBar(min = 0, max = length(years), style = 3)
