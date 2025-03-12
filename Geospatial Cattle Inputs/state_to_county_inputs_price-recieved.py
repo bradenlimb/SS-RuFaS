@@ -106,7 +106,7 @@ for state in states_list:
 #%% Load Crop Data 
 
 ## TODO Select Type
-crop_use = 'cows-milk'
+crop_use = 'steers-and-heifers-GE-500'
 
 crop_dict = {
     'cows-milk': {
@@ -114,10 +114,25 @@ crop_dict = {
         'file_path_national': 'cattle cows milk - price recieved dollars per head - national.csv',
         'units': 'dollar-per-head'
         },
-    'hay':{
-        'file_path_state': 'hay - price recieved dollars per ton - state.csv',
-        'file_path_national': 'hay - price recieved dollars per ton - national.csv',
-        'units': 'dollar-per-ton'
+    'calves': {
+        'file_path_state': 'cattle calves - price recieved dollars per cwt - state.csv',
+        'file_path_national': 'cattle calves - price recieved dollars per cwt - national.csv',
+        'units': 'dollar-per-cwt'
+        },
+    'cows': {
+        'file_path_state': 'cattle cows - price recieved dollars per cwt - state.csv',
+        'file_path_national': 'cattle cows - price recieved dollars per cwt - national.csv',
+        'units': 'dollar-per-cwt'
+        },
+    'GE-500': {
+        'file_path_state': 'cattle GE 500 - price recieved dollars per cwt - state.csv',
+        'file_path_national': 'cattle GE 500 - price recieved dollars per cwt - national.csv',
+        'units': 'dollar-per-cwt'
+        },
+    'steers-and-heifers-GE-500': {
+        'file_path_state': 'cattle steers and heifers GE 500 - price recieved dollars per cwt - state.csv',
+        'file_path_national': 'cattle steers and heifers GE 500 - price recieved dollars per cwt - national.csv',
+        'units': 'dollar-per-cwt'
         },
     }
 

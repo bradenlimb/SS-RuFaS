@@ -107,23 +107,37 @@ for state in states_list:
 
 ## TODO Select Type
 
-# Set the inputs
-file_path_state = 'corn grain - price recieved dollars per bushel - state.csv'
+# Load the CSV file
+file_path = "whole milk - fred.xlsx"
+df_yearly_mean = pd.read_excel(file_path,
+                   sheet_name='Annual ($ per gal)')
 
-# Load the data into a DataFrame
-df_state = pd.read_csv(file_path_state, 
-                       dtype={"State ANSI": str}
-                      )
 
-file_path_national = 'corn grain - price recieved dollars per bushel - national.csv'
 
-# Load the data into a DataFrame
-df_national = pd.read_csv(file_path_national, 
-                       dtype={"State ANSI": str}
-                      )
-df_national['State'] = 'US'
+df_yearly_mean["Year"] = df_yearly_mean["Year"].astype(int)
 
-df_crop = pd.concat([df_state, df_national], ignore_index=True)
+df_yearly_mean['State'] = 'US'
+
+# asdf
+#%%
+
+# # Set the inputs
+# file_path_state = 'corn grain - price recieved dollars per bushel - state.csv'
+
+# # Load the data into a DataFrame
+# df_state = pd.read_csv(file_path_state, 
+#                        dtype={"State ANSI": str}
+#                       )
+
+# file_path_national = 'corn grain - price recieved dollars per bushel - national.csv'
+
+# # Load the data into a DataFrame
+# df_national = pd.read_csv(file_path_national, 
+#                        dtype={"State ANSI": str}
+#                       )
+# df_national['State'] = 'US'
+
+df_crop = df_yearly_mean
 
 # df_crop.set_index("Year",inplace=True)
 
@@ -185,15 +199,6 @@ for col in df_fips_out.columns[1:]:  # Skip the first column
     df_fips_out[col] = pd.to_numeric(df_fips_out[col], errors="coerce")
 
 #%% Save Corn Grain as CSV
-filepath_out = f'../_RuFaS Input Files/crops_corn-grain-price-recieved_dollar-per-bushel.csv'
-df_fips_out.to_csv(filepath_out, index = False)
+filepath_out = f'../_RuFaS Input Files/feeds_whole-milk_dollar-per-gallon.csv'
+df_fips_out.to_csv(filepath_out, index=False, float_format="%.6g")  # 6 significant figures
 
-#%% Calculate corn silage costs
-# Iowa State University estimates corn silage to be 10-12 the price of a bushel of corn per ton of silage if already harvested and stored: https://www.extension.iastate.edu/agdm/crops/html/a1-65.html
-silage_scale = 11
-df_silage_out = df_fips_out.copy(deep=True)
-df_silage_out.iloc[:,1:] *= silage_scale
-
-#%% Save Silage as CSV
-filepath_out = f'../_RuFaS Input Files/crops_corn-silage-price-recieved_dollar-per-ton.csv'
-df_silage_out.to_csv(filepath_out, index=False, float_format="%.6g")  # 6 significant figures

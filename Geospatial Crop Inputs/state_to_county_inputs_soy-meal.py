@@ -107,23 +107,59 @@ for state in states_list:
 
 ## TODO Select Type
 
-# Set the inputs
-file_path_state = 'corn grain - price recieved dollars per bushel - state.csv'
+# Load the CSV file
+file_path = "Soybean Meal_03_05_25-03_29_07.csv"
+df = pd.read_csv(file_path)
 
-# Load the data into a DataFrame
-df_state = pd.read_csv(file_path_state, 
-                       dtype={"State ANSI": str}
-                      )
+# Strip column names of any leading/trailing spaces
+df.columns = df.columns.str.strip()
 
-file_path_national = 'corn grain - price recieved dollars per bushel - national.csv'
+# Identify relevant columns (High, Low, and Date)
+high_col = "High"
+low_col = "Low"
+date_col = "Date"  # Assuming Date is in this column
 
-# Load the data into a DataFrame
-df_national = pd.read_csv(file_path_national, 
-                       dtype={"State ANSI": str}
-                      )
-df_national['State'] = 'US'
+# Convert Date column to datetime format
+df[date_col] = pd.to_datetime(df[date_col], errors="coerce")
 
-df_crop = pd.concat([df_state, df_national], ignore_index=True)
+# Remove rows where High or Low values are zero
+df_filtered = df[(df[high_col] != 0) & (df[low_col] != 0)].copy()
+
+# Compute mean price for each day
+df_filtered["Value"] = (df_filtered[high_col] + df_filtered[low_col]) / 2
+
+# Extract year from the Date column
+df_filtered["Year"] = df_filtered[date_col].dt.year
+
+# Compute mean price per year
+df_yearly_mean = df_filtered.groupby("Year")["Value"].mean().reset_index()
+
+df_yearly_mean = df_yearly_mean[df_yearly_mean["Year"] != 2025]
+
+df_yearly_mean["Year"] = df_yearly_mean["Year"].astype(int)
+
+df_yearly_mean['State'] = 'US'
+
+# asdf
+#%%
+
+# # Set the inputs
+# file_path_state = 'corn grain - price recieved dollars per bushel - state.csv'
+
+# # Load the data into a DataFrame
+# df_state = pd.read_csv(file_path_state, 
+#                        dtype={"State ANSI": str}
+#                       )
+
+# file_path_national = 'corn grain - price recieved dollars per bushel - national.csv'
+
+# # Load the data into a DataFrame
+# df_national = pd.read_csv(file_path_national, 
+#                        dtype={"State ANSI": str}
+#                       )
+# df_national['State'] = 'US'
+
+df_crop = df_yearly_mean
 
 # df_crop.set_index("Year",inplace=True)
 
@@ -185,15 +221,6 @@ for col in df_fips_out.columns[1:]:  # Skip the first column
     df_fips_out[col] = pd.to_numeric(df_fips_out[col], errors="coerce")
 
 #%% Save Corn Grain as CSV
-filepath_out = f'../_RuFaS Input Files/crops_corn-grain-price-recieved_dollar-per-bushel.csv'
-df_fips_out.to_csv(filepath_out, index = False)
+filepath_out = f'../_RuFaS Input Files/crops_soybean-meal-price-recieved_dollar-per-ton.csv'
+df_fips_out.to_csv(filepath_out, index=False, float_format="%.6g")  # 6 significant figures
 
-#%% Calculate corn silage costs
-# Iowa State University estimates corn silage to be 10-12 the price of a bushel of corn per ton of silage if already harvested and stored: https://www.extension.iastate.edu/agdm/crops/html/a1-65.html
-silage_scale = 11
-df_silage_out = df_fips_out.copy(deep=True)
-df_silage_out.iloc[:,1:] *= silage_scale
-
-#%% Save Silage as CSV
-filepath_out = f'../_RuFaS Input Files/crops_corn-silage-price-recieved_dollar-per-ton.csv'
-df_silage_out.to_csv(filepath_out, index=False, float_format="%.6g")  # 6 significant figures
