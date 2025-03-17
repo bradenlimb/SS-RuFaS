@@ -56,7 +56,7 @@ df_fips.loc[df_fips['fips'] == '01','state_fips'] = "00"
 #%% Load the Feed Defualt JSON File
 # JSON file paths
 rufas_github_path = '/Users/bradenlimb/CloudStation/GitHub/RuFAS/input/data/feed/'
-file_path_json = rufas_github_path + 'default_feed.json'
+file_path_json = rufas_github_path + 'default_feed_2.json'
 
 # Open the JSON file and load data
 with open(file_path_json, "r") as file:
@@ -81,7 +81,7 @@ for key in json_feed_defaults_feeds.keys():
     dict_feed_defaults[key] = df_feed_defaults[df_feed_defaults["rufas_id"].isin(ids_use)]
     
 #%% Save dictionary to Excel file
-excel_filename = "default_feeds.xlsx"
+excel_filename = "default_feeds_2.xlsx"
 with pd.ExcelWriter(excel_filename, engine="xlsxwriter") as writer:
     for sheet_name, df in dict_feed_defaults.items():
         df.to_excel(writer, sheet_name=sheet_name, index=False)  # Save each df to a sheet

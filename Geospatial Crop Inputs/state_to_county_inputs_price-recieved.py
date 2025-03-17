@@ -106,7 +106,7 @@ for state in states_list:
 #%% Load Crop Data 
 
 ## TODO Select Type
-crop_use = 'winter-wheat'
+crop_use = 'milk'
 
 crop_dict = {
     'corn-grain': {
@@ -143,6 +143,11 @@ crop_dict = {
         'file_path_state': 'winter wheat - price recieved dollars per bushel - state.csv',
         'file_path_national': 'winter wheat - price recieved dollars per bushel - national.csv',
         'units': 'dollar-per-bushel'
+        },
+    'milk':{
+        'file_path_state': 'milk price recieved state.csv',
+        'file_path_national': 'milk price recieved national.csv',
+        'units': 'dollar-per-CWT'
         },
     }
 
