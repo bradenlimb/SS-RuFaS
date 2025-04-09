@@ -1,0 +1,71 @@
+// SankeyMATIC diagram inputs - Saved: 4/9/2025, 10:38:26 AM
+// https://sankeymatic.com/build/
+
+// === Nodes and Flows ===
+
+Crop [672] Total
+Coproducts [0] Total
+Total [476] Capital Costs
+Capital Costs [380] Grain bins & augers
+Capital Costs [71] Site prep & foundation
+Capital Costs [24] Electrical setup
+Total [183] Operation Costs
+Operation Costs [83] Labor
+Operation Costs [40] Electricity
+Operation Costs [27] Maintenance
+Operation Costs [33] Fuel
+Total [13] Taxes
+
+// === Settings ===
+
+size w 1000
+  h 600
+margin l 12
+  r 12
+  t 18
+  b 20
+bg color #ffffff
+  transparent N
+node w 20
+  h 63
+  spacing 100
+  border 0
+  theme b
+  color #888888
+  opacity 1
+flow curvature 0.42
+  inheritfrom outside-in
+  color #999999
+  opacity 0.45
+layout order automatic
+  justifyorigins N
+  justifyends N
+  reversegraph N
+  attachincompletesto nearest
+labels color #000000
+  hide N
+  highlight 0.8
+  fontface sans-serif
+  linespacing 0.2
+  relativesize 100
+  magnify 120
+labelname appears Y
+  size 25
+  weight 400
+labelvalue appears Y
+  fullprecision N
+  position below
+  weight 400
+labelposition autoalign 0
+  scheme auto
+  first before
+  breakpoint 3
+value format ',.'
+  prefix '$'
+  suffix '/ton'
+themeoffset a 5
+  b 9
+  c 0
+  d 0
+meta mentionsankeymatic Y
+  listimbalances Y
