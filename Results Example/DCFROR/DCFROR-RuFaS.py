@@ -14,7 +14,7 @@ import datetime
 begin_time = datetime.datetime.now()
 
 import sys
-sys.path.append('/Users/bradenlimb/CloudStation/GitHub/DCFROR-Python')
+sys.path.append('../../../../../GitHub/DCFROR-Python')
 from DCFROR import npv_calc, goal_seek, create_dcfror_input_dict, cashflow_plot, mpsp_plot, sankey_text, get_sankey_data, mpsp_plot_from_sankey, LCA_plot
 
 import warnings
