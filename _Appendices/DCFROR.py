@@ -290,44 +290,46 @@ def goal_seek(function,
 
 #%% Create the input dictionary from the excel inputs file
 
-# Read inputs from Excel 
-excel_input_path = 'Appendix B - RuFaS DFROR Example w Cashflow.xlsx'
+if __name__ == "__main__":
 
-raw_inputs = pd.read_excel(excel_input_path, sheet_name=None, engine='openpyxl')
-raw_fin = raw_inputs['Finance Assumptions']
-
-dcfror_inputs = create_dcfror_input_dict(raw_inputs, raw_fin)
-
-#%% Run NPV Analysis
-a_npv,a_cashflow = npv_calc(dcfror_inputs)
-
-# Specify the input variable to optimize
-change_variable = 'unit_cost'
-
-# Set the initial bounds for the input variable
-lower_bound = 1e-12 - 1
-upper_bound = 1e4
-bounds = [lower_bound,upper_bound]
-# bounds = default_bounds(change_variable)
-
-# Set the tolerance for the bisection method
-tolerance = 1e-8
-
-# Calculate the root using bisection
-results_dict = goal_seek(npv_calc, 
-                        dcfror_inputs, 
-                        change_variable, 
-                        bounds, 
-                        tolerance)
-
-# Save results values from optimization for outputing
-optimized_input_value = results_dict['optimized_values']
-optimized_pct_change = results_dict['optimized_pct_change']
-base_value = results_dict['input_values']
-final_dict = results_dict['updated_dcfror_dict']
-
-dcfror_inputs[change_variable] = optimized_input_value
-npv,cash_flow = npv_calc(dcfror_inputs)
-
-print(f"Optimized value of {change_variable}:", optimized_input_value)
-print("Percent Change from Base:", optimized_pct_change*100)
+    # Read inputs from Excel 
+    excel_input_path = 'Appendix B - RuFaS DFROR Example w Cashflow.xlsx'
+    
+    raw_inputs = pd.read_excel(excel_input_path, sheet_name=None, engine='openpyxl')
+    raw_fin = raw_inputs['Finance Assumptions']
+    
+    dcfror_inputs = create_dcfror_input_dict(raw_inputs, raw_fin)
+    
+    #%% Run NPV Analysis
+    a_npv,a_cashflow = npv_calc(dcfror_inputs)
+    
+    # Specify the input variable to optimize
+    change_variable = 'unit_cost'
+    
+    # Set the initial bounds for the input variable
+    lower_bound = 1e-12 - 1
+    upper_bound = 1e4
+    bounds = [lower_bound,upper_bound]
+    # bounds = default_bounds(change_variable)
+    
+    # Set the tolerance for the bisection method
+    tolerance = 1e-8
+    
+    # Calculate the root using bisection
+    results_dict = goal_seek(npv_calc, 
+                            dcfror_inputs, 
+                            change_variable, 
+                            bounds, 
+                            tolerance)
+    
+    # Save results values from optimization for outputing
+    optimized_input_value = results_dict['optimized_values']
+    optimized_pct_change = results_dict['optimized_pct_change']
+    base_value = results_dict['input_values']
+    final_dict = results_dict['updated_dcfror_dict']
+    
+    dcfror_inputs[change_variable] = optimized_input_value
+    npv,cash_flow = npv_calc(dcfror_inputs)
+    
+    print(f"Optimized value of {change_variable}:", optimized_input_value)
+    print("Percent Change from Base:", optimized_pct_change*100)
