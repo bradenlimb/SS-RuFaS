@@ -121,12 +121,13 @@ def npv_calc(input_dict):
             cash_flow.at[i, 'TaxableIncome'] = 0
         else:
             carry_forward_limit = 0.8 #https://www.investopedia.com/terms/t/tax-loss-carryforward.asp#:~:text=Key%20Takeaways%3A&text=Net%20operating%20losses%20(NOLs)%2C,year%20the%20carryforward%20is%20used.
-            if cash_flow.at[i, 'NetRevenue'] <= abs(cash_flow.at[i - 1, 'LossesForward']) * carry_forward_limit :
-                cash_flow.at[i, 'LossesForward'] = cash_flow.at[i, 'NetRevenue'] + cash_flow.at[i - 1, 'LossesForward']
-                cash_flow.at[i, 'TaxableIncome'] = 0
-            else:
-                cash_flow.at[i, 'TaxableIncome'] = cash_flow.at[i, 'NetRevenue'] + cash_flow.at[i - 1, 'LossesForward'] * carry_forward_limit
-                cash_flow.at[i, 'LossesForward'] = cash_flow.at[i - 1, 'LossesForward'] * (1 - carry_forward_limit)
+            
+            # Find the maximum losses that we can apply to net revenue
+            max_loss_utilized = min(abs(cash_flow.at[i - 1, 'LossesForward']), cash_flow.at[i, 'NetRevenue'] * carry_forward_limit)
+                
+            # Apply the loss to offset income
+            cash_flow.at[i, 'TaxableIncome'] = cash_flow.at[i, 'NetRevenue'] - max_loss_utilized
+            cash_flow.at[i, 'LossesForward'] = cash_flow.at[i - 1, 'LossesForward'] + max_loss_utilized
             
         if (cash_flow.at[i, 'TaxableIncome'] > 0):
             tax_amt = cash_flow.at[i, 'TaxableIncome'] * tax_rate
