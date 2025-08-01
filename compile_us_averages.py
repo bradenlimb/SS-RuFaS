@@ -36,6 +36,7 @@ def compile_us_averages(input_dir: str, output_path: str):
         df = pd.read_csv(filepath, index_col=0, dtype=str)
 
         # Convert column names to int (years) and values to numeric
+        print(filename)
         df.columns = [int(col) for col in df.columns]
         for col in df.columns:
             df[col] = pd.to_numeric(df[col], errors='coerce')
