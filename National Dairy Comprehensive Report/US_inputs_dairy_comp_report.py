@@ -36,24 +36,24 @@ conversion_factors = {
 
 #%% Set Commodity Options
 commoditys_dict = {
-    # 'class_II_milk': {
-    #     'in_units': 'dollar-per-cwt',
-    #     'out_units': 'dollar_per_liter',
-    #     'save_name': 'milk_class_2',
-    #     'conversion_factor': 'cwt-milk_to_liters'
-    #     },
-    # 'class_III_milk': {
-    #     'in_units': 'dollar-per-cwt',
-    #     'out_units': 'dollar_per_liter',
-    #     'save_name': 'milk_class_3',
-    #     'conversion_factor': 'cwt-milk_to_liters'
-    #     },
-    # 'class_IV_milk': {
-    #     'in_units': 'dollar-per-cwt',
-    #     'out_units': 'dollar_per_liter',
-    #     'save_name': 'milk_class_4',
-    #     'conversion_factor': 'cwt-milk_to_liters'
-    #     },
+    'class_II_milk': {
+        'in_units': 'dollar-per-cwt',
+        'out_units': 'dollar_per_kilogram',
+        'save_name': 'milk_class_2',
+        'conversion_factor': 'cwt_to_kg'
+        },
+    'class_III_milk': {
+        'in_units': 'dollar-per-cwt',
+        'out_units': 'dollar_per_kilogram',
+        'save_name': 'milk_class_3',
+        'conversion_factor': 'cwt_to_kg'
+        },
+    'class_IV_milk': {
+        'in_units': 'dollar-per-cwt',
+        'out_units': 'dollar_per_kilogram',
+        'save_name': 'milk_class_4',
+        'conversion_factor': 'cwt_to_kg'
+        },
     # 'nonfat_dry_milk': {
     #     'in_units': 'dollar-per-cwt',
     #     'out_units': 'dollar_per_kilogram',
@@ -108,72 +108,72 @@ commoditys_dict = {
     #     'save_name': 'distiller_grains_wet_65pct',
     #     'conversion_factor': 'ton-short_to_kg'
     #     },
-    'replacement_fresh_cow': {
-        'in_units': 'dollar-per-head',
-        'out_units': 'dollar_per_animal',
-        'save_name': 'cow_dairy_fresh',
-        'conversion_factor': 'none'
-        },
-    'replacement_T3_bred_cow': {
-        'in_units': 'dollar-per-head',
-        'out_units': 'dollar_per_animal',
-        'save_name': 'cow_dairy_bred_t3',
-        'conversion_factor': 'none'
-        },
-    'replacement_T3_bred_heifer': {
-        'in_units': 'dollar-per-head',
-        'out_units': 'dollar_per_animal',
-        'save_name': 'cow_dairy_heifer_bred_t3',
-        'conversion_factor': 'none'
-        },
-    'replacement_open_heifer': {
-        'in_units': 'dollar-per-head',
-        'out_units': 'dollar_per_animal',
-        'save_name': 'cow_dairy_heifer_open',
-        'conversion_factor': 'none'
-        },
-    'calves_bulls_no_1': {
-        'in_units': 'dollar-per-cwt',
-        'out_units': 'dollar_per_kilogram',
-        'save_name': 'calf_bull_1',
-        'conversion_factor': 'cwt_to_kg'
-        },
-    'calves_bulls_no_2': {
-        'in_units': 'dollar-per-cwt',
-        'out_units': 'dollar_per_kilogram',
-        'save_name': 'calf_bull_2',
-        'conversion_factor': 'cwt_to_kg'
-        },
-    'calves_heifers_no_1': {
-        'in_units': 'dollar-per-cwt',
-        'out_units': 'dollar_per_kilogram',
-        'save_name': 'calf_heifer_1',
-        'conversion_factor': 'cwt_to_kg'
-        },
-    'calves_heifers_no_2': {
-        'in_units': 'dollar-per-cwt',
-        'out_units': 'dollar_per_kilogram',
-        'save_name': 'calf_ heifer_2',
-        'conversion_factor': 'cwt_to_kg'
-        },
-    'feeder_holstein_300_500': {
-        'in_units': 'dollar-per-cwt',
-        'out_units': 'dollar_per_kilogram',
-        'save_name': 'steer_holstein_300',
-        'conversion_factor': 'cwt_to_kg'
-        },
-    'feeder_holstein_500_700': {
-        'in_units': 'dollar-per-cwt',
-        'out_units': 'dollar_per_kilogram',
-        'save_name': 'steer_holstein_500',
-        'conversion_factor': 'cwt_to_kg'
-        },
-    'feeder_holstein_700_1000': {
-        'in_units': 'dollar-per-cwt',
-        'out_units': 'dollar_per_kilogram',
-        'save_name': 'steer_holstein_700',
-        'conversion_factor': 'cwt_to_kg'
-        },
+    # 'replacement_fresh_cow': {
+    #     'in_units': 'dollar-per-head',
+    #     'out_units': 'dollar_per_animal',
+    #     'save_name': 'cow_dairy_fresh',
+    #     'conversion_factor': 'none'
+    #     },
+    # 'replacement_T3_bred_cow': {
+    #     'in_units': 'dollar-per-head',
+    #     'out_units': 'dollar_per_animal',
+    #     'save_name': 'cow_dairy_bred_t3',
+    #     'conversion_factor': 'none'
+    #     },
+    # 'replacement_T3_bred_heifer': {
+    #     'in_units': 'dollar-per-head',
+    #     'out_units': 'dollar_per_animal',
+    #     'save_name': 'cow_dairy_heifer_bred_t3',
+    #     'conversion_factor': 'none'
+    #     },
+    # 'replacement_open_heifer': {
+    #     'in_units': 'dollar-per-head',
+    #     'out_units': 'dollar_per_animal',
+    #     'save_name': 'cow_dairy_heifer_open',
+    #     'conversion_factor': 'none'
+    #     },
+    # 'calves_bulls_no_1': {
+    #     'in_units': 'dollar-per-cwt',
+    #     'out_units': 'dollar_per_kilogram',
+    #     'save_name': 'calf_bull_1',
+    #     'conversion_factor': 'cwt_to_kg'
+    #     },
+    # 'calves_bulls_no_2': {
+    #     'in_units': 'dollar-per-cwt',
+    #     'out_units': 'dollar_per_kilogram',
+    #     'save_name': 'calf_bull_2',
+    #     'conversion_factor': 'cwt_to_kg'
+    #     },
+    # 'calves_heifers_no_1': {
+    #     'in_units': 'dollar-per-cwt',
+    #     'out_units': 'dollar_per_kilogram',
+    #     'save_name': 'calf_heifer_1',
+    #     'conversion_factor': 'cwt_to_kg'
+    #     },
+    # 'calves_heifers_no_2': {
+    #     'in_units': 'dollar-per-cwt',
+    #     'out_units': 'dollar_per_kilogram',
+    #     'save_name': 'calf_ heifer_2',
+    #     'conversion_factor': 'cwt_to_kg'
+    #     },
+    # 'feeder_holstein_300_500': {
+    #     'in_units': 'dollar-per-cwt',
+    #     'out_units': 'dollar_per_kilogram',
+    #     'save_name': 'steer_holstein_300',
+    #     'conversion_factor': 'cwt_to_kg'
+    #     },
+    # 'feeder_holstein_500_700': {
+    #     'in_units': 'dollar-per-cwt',
+    #     'out_units': 'dollar_per_kilogram',
+    #     'save_name': 'steer_holstein_500',
+    #     'conversion_factor': 'cwt_to_kg'
+    #     },
+    # 'feeder_holstein_700_1000': {
+    #     'in_units': 'dollar-per-cwt',
+    #     'out_units': 'dollar_per_kilogram',
+    #     'save_name': 'steer_holstein_700',
+    #     'conversion_factor': 'cwt_to_kg'
+    #     },
     
     }
 
@@ -404,6 +404,6 @@ for commodity_use in tqdm(commoditys_dict.keys()):
     save_name = commoditys_dict[commodity_use]['save_name']
     save_units = commoditys_dict[commodity_use]['out_units']
     
-    filepath_out = f'../_RuFaS Input Files Correct Units/commodity_prices.{save_name}.{save_units}.csv'
+    filepath_out = f'../_RuFaS Input Files/commodity_prices.{save_name}.{save_units}.csv'
     df_fips_out.to_csv(filepath_out, index=False, float_format="%.6g")  # 6 significant figures
 

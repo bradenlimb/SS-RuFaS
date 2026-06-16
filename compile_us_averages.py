@@ -50,7 +50,9 @@ def compile_us_averages(input_dir: str, output_path: str):
         min_year = file_min if min_year is None else min(min_year, file_min)
         max_year = file_max if max_year is None else max(max_year, file_max)
 
-        us_data[filename] = us_series
+        filename_no_csv = filename[:-4]
+        filename_no_csv = filename_no_csv.replace(".", "_")
+        us_data[filename_no_csv] = us_series
 
     # Build combined DataFrame with complete year span
     years = list(range(min_year, max_year + 1))
@@ -59,6 +61,12 @@ def compile_us_averages(input_dir: str, output_path: str):
     # Populate with values (NaN for missing years)
     for fname, series in us_data.items():
         combined_df.loc[fname, series.index] = series.values
+        
+    # 1) Change the *index name* (the label of the index, not its values)
+    combined_df.index.name = "commodity"  # give the index a descriptive name
+    
+    # 2) Sort all rows by that index
+    combined_df = combined_df.sort_index(ascending=True)   # or ascending=False for reverse order
 
     # Write out
     combined_df.to_csv(output_path)

@@ -39,7 +39,7 @@ file_map = {
     # "crops_soybean-price-received_dollar-per-bushel.csv": ("commodity_prices.soybean_grain.dollar_per_kilogram.csv", 'bushel-soy_to_kg'), 
     # "crops_soybean-meal-price-recieved_dollar-per-ton.csv": ("commodity_prices.soybean_meal.dollar_per_kilogram.csv", 'ton-metric_to_kg'), 
     
-    "crops_winter-wheat-price-received_dollar-per-bushel.csv": ("commodity_prices.winter_wheat_grain.dollar_per_kilogram.csv", 'bushel-soy_to_kg'), # Bushel of winter wheat is the same weight as soybeans
+    # "crops_winter-wheat-price-received_dollar-per-bushel.csv": ("commodity_prices.winter_wheat_grain.dollar_per_kilogram.csv", 'bushel-soy_to_kg'), # Bushel of winter wheat is the same weight as soybeans
     
     # "diesel_retail_dollar-per-gallon.csv": ("commodity_prices.diesel.dollar_per_liter.csv", 'gallon_to_liter'),
     # "gasoline_retail_dollar-per-gallon.csv": ("commodity_prices.gasoline.dollar_per_liter.csv", 'gallon_to_liter'),
@@ -56,7 +56,7 @@ file_map = {
     # "feeds_limestone_dollar-per-kg.csv": ("commodity_prices.limestone.dollar_per_kilogram.csv", 'none'),
     # "feeds_sudan-silage_dollar-per-ton.csv": ("commodity_prices.sundan_silage.dollar_per_kilogram.csv", 'ton-short_to_kg'),
     
-    # "feeds_milk-price-received_dollar-per-CWT.csv": ("commodity_prices.milk.dollar_per_liter.csv", 'cwt-milk_to_liters'),
+    "feeds_milk-price-received_dollar-per-CWT.csv": ("commodity_prices.milk_all.dollar_per_kilogram.csv", 'cwt_to_kg'),
     # "feeds_milk-whole_dollar-per-gallon.csv": ("commodity_prices.milk_retail.dollar_per_liter.csv", 'gallon_to_liter'),
     
     # "labor_hired-wage-rate_dollar-per-hour.csv": ("farm_services.labor_hours.dollar_per_hour.csv", 'none'),
